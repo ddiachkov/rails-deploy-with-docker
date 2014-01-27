@@ -1,6 +1,11 @@
 namespace :docker do
   task :checkout do
     system 'cd tmp && rm -rf clean-copy && git clone --depth 1 --single-branch --branch master git@github.com:amuino/rails-deploy-with-docker.git clean-copy'
+    # Cleanup non-release files to improve cache hits:
+    # -- git metadata
+    system 'rm -rf tmp/clean-copy/.git'
+    # -- tests
+    system 'rm -rf tmp/clean-copy/test'
   end
 
   desc "Builds a docker image from the repository"
